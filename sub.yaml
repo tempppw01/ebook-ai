@@ -1,0 +1,13 @@
+# Clash Config
+proxies:
+  - name: "DIRECT"
+    type: direct
+
+proxy-groups:
+  - name: "local"
+    type: static
+    proxies: [DIRECT]
+
+rules:
+  - GEOIP,CN,DIRECT
+  - MATCH,local
