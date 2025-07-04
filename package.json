@@ -23,7 +23,7 @@
     "appId": "com.shuaihong.magicpocket",
     "productName": "帅红的神奇口袋",
     "directories": {
-      "output": "C:/Users/Administrator/Desktop/code/发版"
+      "output": "dist"
     },
     "icon": "build/icon.ico",
     "files": [
