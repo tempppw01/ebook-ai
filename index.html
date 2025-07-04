@@ -1,79 +1,112 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>电子书阅读器</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帅红的神奇口袋</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <div id="library">
-    <h3>书库</h3>
-    <div id="book-list">
-      <p id="no-books-message">书库为空。</p>
-    </div>
-    <button id="import-book-btn">导入书籍</button>
-    <div id="toc-container">
-      <h3>目录</h3>
-      <div id="toc-list"></div>
-    </div>
-    <div id="bookmarks-container">
-      <h3>书签</h3>
-      <div id="bookmarks-list"></div>
-    </div>
-  </div>
-  <div id="main-content">
-    <div id="settings-menu-container">
-      <button id="settings-btn">⚙️</button>
-      <div id="settings-menu" class="hidden">
-        <div class="settings-item">
-          <label for="theme-select">主题:</label>
-          <select id="theme-select">
-            <option value="light">明亮</option>
-            <option value="dark">暗黑</option>
-          </select>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div id="app-sidebar">
+            <div class="sidebar-item active" data-view="library-panel">
+                <span class="icon material-icons">import_contacts</span>
+                <span class="tooltip">书库</span>
+            </div>
+            <div class="sidebar-item" data-view="settings-view">
+                <span class="icon material-icons">settings</span>
+                <span class="tooltip">设置</span>
+            </div>
         </div>
-        <div class="settings-item">
-          <label for="font-size-input">字号:</label>
-          <input type="number" id="font-size-input" min="10" max="30" value="16">
-        </div>
-        <hr>
-        <div class="settings-item">
-          <label for="openai-url">API 地址:</label>
-          <input type="text" id="openai-url" placeholder="https://api.openai.com/v1">
-        </div>
-        <div class="settings-item">
-          <label for="openai-key">API 密钥:</label>
-          <input type="password" id="openai-key" placeholder="sk-...">
-        </div>
-        <div class="settings-item">
-          <label for="openai-model">模型:</label>
-          <input type="text" id="openai-model" value="gpt-3.5-turbo">
-        </div>
-      </div>
-    </div>
-    <div id="reader">
-      <div id="book-view"></div>
-      <div id="initial-message">
-        <h2>欢迎使用电子书阅读器</h2>
-        <p>请从左侧书库选择一本书，或导入新书。</p>
-      </div>
-    </div>
-    <div id="controls">
-      <div id="navigation">
-        <button id="prevPage">上一页</button>
-        <button id="nextPage">下一页</button>
-      </div>
-      <button id="add-bookmark-btn">添加书签</button>
-    </div>
-    <div id="interaction">
-      <input type="text" id="question" placeholder="输入问题或请求" />
-      <button id="askBtn">提问</button>
-    </div>
-  </div>
 
-<script src="./libs/jszip.min.js"></script>
-<script src="./libs/epub.min.js"></script>
-<script type="module" src="app.js"></script>
+        <!-- Main Content Area -->
+        <div id="main-content">
+            <!-- Library and Reader View -->
+            <div id="library-reader-container" class="view-panel active">
+                <div id="library-panel">
+                    <h3>书库</h3>
+                    <div id="book-list"></div>
+                    <div id="no-books-message" style="display: none; text-align: center; color: #888; margin-top: 20px;">
+                        <p>您的书库是空的。</p>
+                        <p>点击下方按钮导入第一本书吧！</p>
+                    </div>
+                    <button id="import-book-btn">导入书籍</button>
+                    <div id="toc-container" style="display: none;">
+                        <h4>目录</h4>
+                        <div id="toc-list"></div>
+                    </div>
+                    <div id="bookmarks-container" style="display: none;">
+                        <h4>书签</h4>
+                        <div id="bookmarks-list"></div>
+                    </div>
+                </div>
+                <div id="reader-view" class="collapsed">
+                    <div id="reader">
+                        <div id="book-view"></div>
+                        <div id="initial-message">
+                            <h2>欢迎使用电子书阅读器</h2>
+                            <p>从左侧书库选择一本书开始阅读，或导入一本新书。</p>
+                        </div>
+                    </div>
+                    <div id="bottom-nav" class="bottom-nav" style="display: none;">
+                        <button id="prevPage">上一页</button>
+                        <button id="nextPage">下一页</button>
+                        <button id="add-bookmark-btn" style="display: none;">添加书签</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settings-view" class="view-panel">
+                <div class="settings-content">
+                    <div class="settings-header">
+                        <h2>设置</h2>
+                    </div>
+                    <div class="settings-category">
+                        <h3>外观</h3>
+                        <div class="settings-card">
+                            <div class="settings-item">
+                                <label for="theme-select">应用主题</label>
+                                <select id="theme-select">
+                                    <option value="light">明亮</option>
+                                    <option value="dark">暗黑</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <label for="font-size-input">阅读字号</label>
+                                <input type="number" id="font-size-input" value="16" min="10" max="32">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-category">
+                        <h3>模型服务</h3>
+                        <div class="settings-card">
+                            <div class="settings-item">
+                                <label for="openai-url">API 地址</label>
+                                <input type="text" id="openai-url" placeholder="例如: https://api.openai.com/v1">
+                            </div>
+                            <div class="settings-item">
+                                <label for="openai-key">API 密钥</label>
+                                <input type="password" id="openai-key" placeholder="请输入您的 API Key">
+                            </div>
+                            <div class="settings-item">
+                                <label for="openai-model">模型名称</label>
+                                <input type="text" id="openai-model" placeholder="例如: gpt-3.5-turbo">
+                            </div>
+                            <div class="settings-item button-item">
+                                <button id="test-openai-btn">测试连接</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./libs/jszip.min.js"></script>
+    <script src="./libs/epub.min.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

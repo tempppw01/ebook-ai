@@ -1,11 +1,16 @@
 {
-  "name": "ebook-reader-desktop",
-  "version": "1.0.0",
+  "name": "shuaihong-magic-pocket",
+  "version": "0.1.0-beta",
   "description": "A desktop ebook reader built with Electron.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "publish": "electron-builder --publish always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tempppw01/ebook-ai.git"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +20,18 @@
     "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.example.ebookreader",
-    "productName": "Ebook Reader",
+    "appId": "com.shuaihong.magicpocket",
+    "productName": "帅红的神奇口袋",
+    "directories": {
+      "output": "C:/Users/Administrator/Desktop/code/发版"
+    },
+    "icon": "build/icon.ico",
     "files": [
       "index.html",
       "main.js",
       "style.css",
-      "js/"
+      "js/",
+      "libs/"
     ],
     "win": {
       "target": "nsis"
@@ -29,6 +39,9 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github"
     }
   }
 }

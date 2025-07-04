@@ -6,14 +6,22 @@ function renderBookList(library, onBookSelect) {
   const bookListDiv = document.getElementById('book-list');
   const noBooksMessage = document.getElementById('no-books-message');
 
+  if (!bookListDiv) return; // Exit if the main list container is missing
   bookListDiv.innerHTML = '';
-  if (library.length === 0) {
-    noBooksMessage.style.display = 'block';
-  } else {
-    noBooksMessage.style.display = 'none';
+
+  if (noBooksMessage) {
+    if (library.length === 0) {
+      noBooksMessage.style.display = 'block';
+    } else {
+      noBooksMessage.style.display = 'none';
+    }
+  }
+  
+  if (library.length > 0) {
     library.forEach((book) => {
       const bookItem = document.createElement('div');
       bookItem.className = 'book-item';
+      // Add left-click listener to open the book
       bookItem.onclick = () => {
         // Revoke old blob URLs to prevent memory leaks
         library.forEach(b => {
@@ -23,6 +31,14 @@ function renderBookList(library, onBookSelect) {
         });
         onBookSelect(book);
       };
+
+      // Add right-click listener for context menu
+      bookItem.addEventListener('contextmenu', (e) => {
+          e.preventDefault(); // Prevent the default browser context menu
+          if (window.electronAPI) {
+              window.electronAPI.showBookContextMenu(book.id); // Send book ID to main process
+          }
+      });
 
       const img = document.createElement('img');
       const placeholder = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTAwIDE1MCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjZmZmIj5ObyBDb3ZlcjwvdGV4dD48L3N2Zz4=';
@@ -95,13 +111,14 @@ function renderBookmarks(bookData, rendition) {
   const bookmarksListDiv = document.getElementById('bookmarks-list');
   const bookmarksContainer = document.getElementById('bookmarks-container');
   bookmarksListDiv.innerHTML = '';
-  bookmarksContainer.style.display = 'block';
   const bookmarks = bookData.bookmarks || [];
 
   if (bookmarks.length === 0) {
-    bookmarksListDiv.innerHTML = '<p>无书签。</p>';
+    bookmarksContainer.style.display = 'none'; // Hide container if no bookmarks
     return;
   }
+
+  bookmarksContainer.style.display = 'block'; // Show container if there are bookmarks
 
   bookmarks.forEach((bookmark, index) => {
     const item = document.createElement('div');
