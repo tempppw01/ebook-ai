@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>电子书阅读器</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  #reader { padding: 20px; height: 80vh; overflow-y: auto; border-bottom: 1px solid #ccc; }
+  #controls { padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+  #navigation { display: flex; gap: 10px; }
+  #interaction { width: 100%; margin-top: 10px; }
+  #question { width: 80%; padding: 5px; }
+  #askBtn { padding: 5px 10px; }
+</style>
+</head>
+<body>
+<div id="reader">请加载书籍内容...</div>
+<div id="controls">
+  <div id="navigation">
+    <button id="prevPage">上一页</button>
+    <button id="nextPage">下一页</button>
+  </div>
+</div>
+<div id="interaction">
+  <input type="text" id="question" placeholder="输入问题或请求" />
+  <button id="askBtn">提问</button>
+</div>
+<script>
+  let bookContent = "";
+  let currentPage = 0;
+  const pageSize = 1000; // 每页字符数
+  const readerDiv = document.getElementById('reader');
+
+  // 加载示例书籍内容（后续可改为文件加载）
+  fetch('sample.txt')
+    .then(response => response.text())
+    .then(text => {
+      bookContent = text;
+      displayPage();
+    });
+
+  function displayPage() {
+    const start = currentPage * pageSize;
+    const end = start + pageSize;
+    readerDiv.textContent = bookContent.slice(start, end);
+  }
+
+  document.getElementById('prevPage').onclick = () => {
+    if (currentPage > 0) {
+      currentPage--;
+      displayPage();
+    }
+  };
+
+  document.getElementById('nextPage').onclick = () => {
+    if ((currentPage + 1) * pageSize < bookContent.length) {
+      currentPage++;
+      displayPage();
+    }
+  };
+
+  document.getElementById('askBtn').onclick = () => {
+    const question = document.getElementById('question').value;
+    // 后续集成OpenAI接口
+    alert('提问功能待集成OpenAI接口');
+  };
+</script>
